@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-dnsmasq
+  namespace: default
+  labels:
+    iotedge.intel.com/appname: dnsmasq
+spec:
+  selector:
+    matchLabels:
+      iotedge.intel.com/appname: dnsmasq
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        iotedge.intel.com/appname: dnsmasq
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      hostNetwork: true
+      hostIPC: true
+      hostPID: true
+      restartPolicy: Always
+      containers:
+        - name: dnsmasq
+          image: test:latest
+          imagePullPolicy: IfNotPresent
+          args:
+          - -i enp23s0f3
+          - -s 10.43.100.200
+          - -e 10.43.100.220
+          - -a 10.43.100.111
+          - -n tinkerbell-nginx.cluster.onprem
+          - -d
+          - -f
+          volumeMounts:
+          - name: data
+            mountPath: /home/iotedge/tftp
+          securityContext:
+            runAsUser: 1000
+            capabilities:
+              add: ["NET_ADMIN"]
+      initContainers:
+        - command:
+          - timeout
+          - 240h
+          - sh
+          - /scripts/script.sh
+          name: wait4efi
+          image: busybox:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1000
+          volumeMounts:
+          - name: script-volume
+            mountPath: /scripts
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: script-volume
+        configMap:
+          name: my-script

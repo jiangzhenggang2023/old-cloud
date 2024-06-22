@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  script.sh: |
+    #!/bin/sh
+
+    ip=$(nslookup mi-tinkerbell.maestro-iaas-system.svc.cluster.local 10.43.0.10 | awk '/^Address: / { print $2 }')
+    until wget -Y off -q --spider http://${ip}:8080/signed_ipxe.efi
+    do
+      sleep 10
+    done
+kind: ConfigMap
+metadata:
+  name: my-script
+  namespace: default
