@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: local-dnsmasq
-  namespace: default
+  name: {{ include "iot-dnsmasq.fullname" . }}
   labels:
-    iotedge.intel.com/appname: dnsmasq
+    {{- include "iot-dnsmasq.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -23,16 +22,10 @@ spec:
       restartPolicy: Always
       containers:
         - name: dnsmasq
-          image: test:latest
-          imagePullPolicy: IfNotPresent
+          image: {{ include "iot-dnsmasq.registry-url" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-          - -i enp23s0f3
-          - -s 10.43.100.200
-          - -e 10.43.100.220
-          - -a 10.43.100.111
-          - -n tinkerbell-nginx.cluster.onprem
-          - -d
-          - -f
+          {{- include "iot-dnsmasq.args" . | nindent 10 }}
           volumeMounts:
           - name: data
             mountPath: /home/iotedge/tftp

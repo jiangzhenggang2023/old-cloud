@@ -1,4 +1,26 @@
+
+fullnameOverride: iot-dnsmasq
 image:
   registry: ""
-  repository: ""
-  pullPolicy: ""
+  repository: "test"
+  tag: "latest"
+  pullPolicy: "IfNotPresent"
+
+network:
+  # the interface name which communicate with edge node
+  interface:
+  # the ip address which communicate with edge node
+  ip:
+
+dns:
+  enable: true
+
+tftp:
+  enable: true
+
+dhcp:
+  range_min:
+  range_max:
+
+tink_domain: ""
+
