@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  itep.conf: |
+    {{ include "iot-dnsmasq.domain-name" . | nindent 4 }}
+kind: ConfigMap
+metadata:
+  name: dnsconf
+  namespace: {{ .Values.namespace }}

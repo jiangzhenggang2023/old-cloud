@@ -4,6 +4,7 @@ metadata:
   name: {{ include "iot-dnsmasq.fullname" . }}
   labels:
     {{- include "iot-dnsmasq.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -27,8 +28,9 @@ spec:
           args:
           {{- include "iot-dnsmasq.args" . | nindent 10 }}
           volumeMounts:
-          - name: data
+          - name: tftp
             mountPath: /home/iotedge/tftp
+          {{- include "iot-dnsmasq.container-volumes" . | nindent 10 }}
           securityContext:
             runAsUser: 1000
             capabilities:
@@ -47,9 +49,12 @@ spec:
           volumeMounts:
           - name: script-volume
             mountPath: /scripts
+          - name: tftp
+            mountPath: /tftp
       volumes:
-      - name: data
-        emptyDir: {}
       - name: script-volume
         configMap:
-          name: my-script
+          name: wait4efi-script
+      - name: tftp
+        emptyDir: {}
+      {{- include "iot-dnsmasq.volumes" . |  nindent 6 }}

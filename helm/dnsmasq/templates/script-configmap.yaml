@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  script.sh: |
+    #!/bin/sh
+
+    ip=$(nslookup mi-tinkerbell.maestro-iaas-system.svc.cluster.local {{ .Values.k8s.kubedns }} | awk '/^Address: / { print $2 }')
+    echo "$ip" > /tftp/.ip
+    until wget -Y off -q --spider http://${ip}:8080/signed_ipxe.efi
+    do
+      sleep 10
+    done
+kind: ConfigMap
+metadata:
+  name: wait4efi-script
+  namespace: {{ .Values.namespace }}

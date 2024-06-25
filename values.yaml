@@ -10,18 +10,18 @@ namespace: default
 
 network:
   # the interface name which communicate with edge node
-  interface:
+  interface: enp23s0f3
   # the ip address which communicate with edge node
-  ip:
+  ip: "10.43.100.111"
 
 tftp:
   enable: true
 
 dhcp:
-  range_min:
-  range_max:
+  range_min: "10.43.100.200"
+  range_max: "10.43.100.220"
 
-tink_domain: ""
+tink_domain: "tinkerbell-nginx.cluster.onprem"
 
 k8s:
   # the ip address of kube-dns service
