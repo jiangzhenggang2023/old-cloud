@@ -48,8 +48,8 @@ fi
 get_dhcp_range() {
     local int="$1"
     iprange=$(ip addr show dev "$int" | grep -oP 'inet \K\d+\.\d+\.\d+\.\d+\/\d+')
-    dhcp_min=$(/usr/bin/ipcalc --minaddr --maxaddr "$iprange" | grep -oP '\d.*')
-    dhcp_max=$(/usr/bin/ipcalc --minaddr --maxaddr "$iprange" | grep -oP '\d.*')
+    dhcp_min=$(/usr/bin/ipcalc --minaddr "$iprange" | grep -oP '\d.*')
+    dhcp_max=$(/usr/bin/ipcalc --maxaddr "$iprange" | grep -oP '\d.*')
     echo "$dhcp_min","$dhcp_max",6h
 }
 
