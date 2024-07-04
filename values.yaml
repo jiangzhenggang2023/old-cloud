@@ -10,18 +10,20 @@ namespace: default
 
 network:
   # the interface name which communicate with edge node
-  interface: enp23s0f3
-  # the ip address which communicate with edge node
-  ip: "10.43.100.111"
+  interface: eno8303
 
 tftp:
   enable: true
 
-dhcp:
-  range_min: "10.43.100.200"
-  range_max: "10.43.100.220"
+# 10.248.2.5,114.114.114.114
+remote_dns: 10.248.2.5,114.114.114.114
 
-tink_domain: "tinkerbell-nginx.cluster.onprem"
+pxe_server: "10.67.100.173"
+
+tink_domain: "tinkbell-nginx.zz-iotedge-domo.sh.intel.com"
+
+# true or false
+only_tftp: false
 
 k8s:
   # the ip address of kube-dns service
@@ -29,7 +31,7 @@ k8s:
   kubedns: 10.43.0.10
 
 dns:
-  enable: true
+  enable: false
   domains:
     - name: tinkerbell-nginx.cluster.onprem
       value: 10.43.100.3

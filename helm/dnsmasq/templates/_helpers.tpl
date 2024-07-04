@@ -13,16 +13,19 @@ iotedge.intel.com/appname: dnsmasq
 {{- end -}}
 
 {{- define "iot-dnsmasq.args" -}}
+{{- if .Values.only_tftp -}}
+- -O
+{{- else -}}
 - -i {{ .Values.network.interface }}
-- -s {{ .Values.dhcp.range_min }}
-- -e {{ .Values.dhcp.range_max }}
-- -a {{ .Values.network.ip }}{{- "\n" -}}
-{{- printf "- -n %s\n" .Values.tink_domain -}}
-{{- if .Values.dns.enable -}}
-{{- printf "- -d\n" -}}
+- -D {{ .Values.remote_dns }}
+- -r {{ .Values.pxe_server }}
+- -n {{ .Values.tink_domain }}
+{{- if .Values.dns.enable }}
+- -d
 {{- end -}}
-{{- if .Values.tftp.enable -}}
-{{- printf "- -f" -}}
+{{ if .Values.tftp.enable }}
+- -f
+{{- end -}}
 {{- end -}}
 {{- end -}}
 
@@ -36,7 +39,7 @@ iotedge.intel.com/appname: dnsmasq
 
 
 {{- define "iot-dnsmasq.container-volumes" -}}
-{{- if .Values.dns.enable }}
+{{- if .Values.dns.enable -}}
 - name: dnsconf
   mountPath: /home/iotedge/dnsmasq.d
 {{- end -}}

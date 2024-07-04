@@ -1,3 +1,4 @@
+{{- if .Values.dns.enable -}}
 apiVersion: v1
 data:
   itep.conf: |
@@ -6,3 +7,4 @@ kind: ConfigMap
 metadata:
   name: dnsconf
   namespace: {{ .Values.namespace }}
+{{- end -}}
