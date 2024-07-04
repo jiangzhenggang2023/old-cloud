@@ -3,6 +3,8 @@ RUN apk --no-cache add \
     sudo \
     dnsmasq \
     nmap \
+    ipcalc \
+    grep \
     nmap-scripts
 
 ARG username=iotedge

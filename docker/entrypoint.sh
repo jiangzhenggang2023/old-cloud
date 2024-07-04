@@ -47,9 +47,9 @@ fi
 
 get_dhcp_range() {
     local int="$1"
-    iprange=$(ip addr show dev "$int" | grep -oP 'inet \K[\d.]+\/\d.')
-    dhcp_min=$(ipcalc -n -b "$iprange" | grep "HostMin" | awk '{print $2}')
-    dhcp_max=$(ipcalc -n -b "$iprange" | grep "HostMax" | awk '{print $2}')
+    iprange=$(ip addr show dev "$int" | grep -oP 'inet \K\d+\.\d+\.\d+\.\d+\/\d+')
+    dhcp_min=$(/usr/bin/ipcalc --minaddr --maxaddr "$iprange" | grep -oP '\d.*')
+    dhcp_max=$(/usr/bin/ipcalc --minaddr --maxaddr "$iprange" | grep -oP '\d.*')
     echo "$dhcp_min","$dhcp_max",6h
 }
 
@@ -60,8 +60,8 @@ get_brd() {
 
 main() {
     # download EFI file
-    # ip=$(cat /home/iotedge/tftp/.ip)
-    # wget http://${ip}:8080/signed_ipxe.efi -O /home/iotedge/tftp/signed_ipxe.efi
+    ip=$(cat /home/iotedge/tftp/.ip)
+    wget http://${ip}:8080/signed_ipxe.efi -O /home/iotedge/tftp/signed_ipxe.efi
 
     if [ ! -z $ONLY_TFTP ];then
         export TFTP_COMMENT=""
