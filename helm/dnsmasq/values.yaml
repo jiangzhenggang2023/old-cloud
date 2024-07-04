@@ -17,11 +17,15 @@ network:
 tftp:
   enable: true
 
-dhcp:
-  range_min:
-  range_max:
+# 10.248.2.5,114.114.114.114
+dns:
+
+pxe_server:
 
 tink_domain: ""
+
+# true or false
+only_tftp: true
 
 k8s:
   # the ip address of kube-dns service
