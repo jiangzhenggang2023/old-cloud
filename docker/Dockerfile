@@ -1,4 +1,7 @@
 FROM alpine:3.18
+
+LABEL maintainer "Jiang Zhenggang <zhenggang.jiang@intel.com>"
+
 RUN apk --no-cache add \
     sudo \
     dnsmasq \
