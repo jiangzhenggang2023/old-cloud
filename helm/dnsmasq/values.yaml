@@ -10,22 +10,21 @@ namespace: default
 
 network:
   # the interface name which communicate with edge node
-  interface:
-  # the ip address which communicate with edge node
-  ip:
+  interface: ""
+  # the range for dhcp server.eg: 10.43.100.1,10.43.100.100
+  dhcp_range: ""
+  gateway: ""
+  broadcast_ip: ""
 
 tftp:
   enable: true
 
-# 10.248.2.5,114.114.114.114
-dns:
-
-pxe_server:
+pxe_server: ""
 
 tink_domain: ""
 
 # true or false
-only_tftp: true
+only_tftp: false
 
 k8s:
   # the ip address of kube-dns service
@@ -34,6 +33,7 @@ k8s:
 
 dns:
   enable: true
+  ip_address: "10.248.2.5"
   domains:
     - name: tinkerbell-nginx.cluster.onprem
       value: 10.43.100.3

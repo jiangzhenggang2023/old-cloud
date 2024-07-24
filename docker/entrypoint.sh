@@ -17,6 +17,9 @@ ex:
 Options:
     -O:             only save tftp function
     -r:             remote fm server address(server name or ip address)
+    -R:             the dhcp range(eg: 1.1.1.1,1.1.1.255)
+    -g:             the gateway address
+    -b:             the broadcast address
     -i:             the interface need to be bind
     -n:             the domain name for tinkbell server
     -d:             enable DNS function
@@ -26,10 +29,13 @@ Options:
 EOF
 }
 
-while getopts 'i:r:n:D:Odfh' flag; do
+while getopts 'i:r:R:g:b:n:D:Odfh' flag; do
   case "${flag}" in
     O) export ONLY_TFTP="only" ;;
     r) export REMOTE_PXE_SERVER="${OPTARG}" ;;
+    R) export DHCP_RANGE="${OPTARG}" ;;
+    g) export NETWORK_GATEWAY_IP="${OPTARG}";;
+    b) export NETWORK_BROADCAST_IP="${OPTARG}";;
     i) export INTERFACE_BINDING="${OPTARG}" ;;
     n) export ORCH_SERVER_DOMAIN="${OPTARG}" ;;
     D) export DNS_ADDRESS="${OPTARG}" ;;
@@ -45,18 +51,6 @@ if [ $HELP ]; then
     exit 1
 fi
 
-get_dhcp_range() {
-    local int="$1"
-    iprange=$(ip addr show dev "$int" | grep -oP 'inet \K\d+\.\d+\.\d+\.\d+\/\d+')
-    dhcp_min=$(/usr/bin/ipcalc --minaddr "$iprange" | grep -oP '\d.*')
-    dhcp_max=$(/usr/bin/ipcalc --maxaddr "$iprange" | grep -oP '\d.*')
-    echo "$dhcp_min","$dhcp_max",6h
-}
-
-get_brd() {
-    local int="$1"
-    ip addr show dev "$int" | grep -oP 'brd \K[\d.]+'
-}
 
 main() {
     # download EFI file
@@ -88,11 +82,9 @@ main() {
         export DHCP_COMMENT=""
         export INTERFACE_COMMENT=""
 
-        DHCP_RANGE=$(get_dhcp_range "$INTERFACE_BINDING")
-        NETWORK_GATEWAY_IP=$(ip route | grep default | awk '{print $3}')
+        NETWORK_DHCP_RANGE="$DHCP_RANGE,6h"
         # NETWORK_DNS_PRIMARY=$()
         # NETWORK_DNS_SECONDARY=$()
-        NETWORK_BROADCAST_IP=$(ip addr show dev "$INTERFACE_BINDING" | grep -oP 'brd \K[\d.]+')
 
         sed -e "s/{{DNS_PORT}}/$DNS_PORT/g ; \
         s/{{TFTP_COMMENT}}/$TFTP_COMMENT/g ; \
@@ -100,7 +92,7 @@ main() {
         s/{{DHCP_COMMENT}}/$DHCP_COMMENT/g ; \
 
         s/{{INTERFACE_BINDING}}/$INTERFACE_BINDING/g ; \
-        s/{{DHCP_RANGE}}/$DHCP_RANGE/g ; \
+        s/{{DHCP_RANGE}}/$NETWORK_DHCP_RANGE/g ; \
         s/{{NETWORK_GATEWAY_IP}}/$NETWORK_GATEWAY_IP/g ; \
         s/{{NETWORK_DNS_ADDRESS}}/$DNS_ADDRESS/g ; \
         s/{{NETWORK_BROADCAST_IP}}/$NETWORK_BROADCAST_IP/g ; \

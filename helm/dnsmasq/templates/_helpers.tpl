@@ -17,8 +17,11 @@ iotedge.intel.com/appname: dnsmasq
 - -O
 {{- else -}}
 - -i {{ .Values.network.interface }}
-- -D {{ .Values.remote_dns }}
+- -D {{ .Values.dns.ip_address }}
 - -r {{ .Values.pxe_server }}
+- -R {{ .Values.network.dhcp_range }}
+- -g {{ .Values.network.gateway }}
+- -b {{ .Values.network.broadcast_ip }}
 - -n {{ .Values.tink_domain }}
 {{- if .Values.dns.enable }}
 - -d
