@@ -10,18 +10,18 @@ namespace: default
 
 network:
   # the interface name which communicate with edge node
-  interface: ""
+  interface: "eno2"
   # the range for dhcp server.eg: 10.43.100.1,10.43.100.100
-  dhcp_range: ""
-  gateway: ""
-  broadcast_ip: ""
+  dhcp_range: "10.43.100.210,10.43.100.250"
+  gateway: "10.43.100.200"
+  broadcast_ip: "10.43.100.255"
 
 tftp:
   enable: true
 
-pxe_server: ""
+pxe_server: "10.43.100.200"
 
-tink_domain: ""
+tink_domain: "tinkerbell-nginx.chip.test"
 
 # true or false
 only_tftp: false
@@ -35,77 +35,86 @@ dns:
   enable: true
   ip_address: "10.248.2.5"
   domains:
-    - name: tinkerbell-nginx.cluster.onprem
+    - name: tinkerbell-nginx.chip.test
       value: 10.43.100.3
-    - name: cluster.onprem
+    - name: chip.test
+      value:  10.43.100.2
+    - name: rancher.chip.test
       value: 10.43.100.2
-    - name: rancher.cluster.onprem
+    - name: keycloak.chip.test
       value: 10.43.100.2
-    - name: keycloak.cluster.onprem
+    - name: vault.chip.test
       value: 10.43.100.2
-    - name: vault.cluster.onprem
+    - name: observability-ui.chip.test
       value: 10.43.100.2
-    - name: observability-ui.cluster.onprem
+    - name: observability-admin.chip.test
       value: 10.43.100.2
-    - name: observability-admin.cluster.onprem
+    - name: iaas.chip.test
       value: 10.43.100.2
-    - name: iaas.cluster.onprem
+    - name: infra.chip.test
       value: 10.43.100.2
-    - name: infra.cluster.onprem
+    - name: update.chip.test
       value: 10.43.100.2
-    - name: update.cluster.onprem
+    - name: web-ui.chip.test
       value: 10.43.100.2
-    - name: web-ui.cluster.onprem
+    - name: api.chip.test
       value: 10.43.100.2
-    - name: metadata.cluster.onprem
+    - name: metadata.chip.test
       value: 10.43.100.2
-    - name: registry.cluster.onprem
+    - name: registry.chip.test
       value: 10.43.100.2
-    - name: cluster-orch.cluster.onprem
+    - name: registry-oci.chip.test
       value: 10.43.100.2
-    - name: cluster-orch-edge-node.cluster.onprem
+    - name: cluster-orch.chip.test
       value: 10.43.100.2
-    - name: infra-node.cluster.onprem
+    - name: cluster-orch-edge-node.chip.test
       value: 10.43.100.2
-    - name: logs-node.cluster.onprem
+    - name: infra-node.chip.test
       value: 10.43.100.2
-    - name: metrics-node.cluster.onprem
+    - name: logs-node.chip.test
       value: 10.43.100.2
-    - name: update-node.cluster.onprem
+    - name: metrics-node.chip.test
       value: 10.43.100.2
-    - name: app-orch.cluster.onprem
+    - name: update-node.chip.test
       value: 10.43.100.2
-    - name: fleet.cluster.onprem
+    - name: app-orch.chip.test
       value: 10.43.100.2
-    - name: telemetry.cluster.onprem
+    - name: fleet.chip.test
       value: 10.43.100.2
-    - name: telemetry-node.cluster.onprem
+    - name: telemetry.chip.test
       value: 10.43.100.2
-    - name: log-query.cluster.onprem
+    - name: telemetry-node.chip.test
       value: 10.43.100.2
-    - name: app-service-proxy.cluster.onprem
+    - name: log-query.chip.test
       value: 10.43.100.2
-    - name: ws-app-service-proxy.cluster.onprem
+    - name: app-service-proxy.chip.test
       value: 10.43.100.2
-    - name: cluster-orch-node.cluster.onprem
+    - name: ws-app-service-proxy.chip.test
       value: 10.43.100.2
-    - name: vnc.cluster.onprem
+    - name: cluster-orch-node.chip.test
       value: 10.43.100.2
-    - name: release.cluster.onprem
+    - name: vnc.chip.test
       value: 10.43.100.2
-    - name: gitea.cluster.onprem
+    - name: release.chip.test
       value: 10.43.100.2
-    - name: tinkerbell-server.cluster.onprem
+    - name: tinkerbell-server.chip.test
       value: 10.43.100.2
-    - name: onboarding.cluster.onprem
+    - name: onboarding.chip.test
       value: 10.43.100.2
-    - name: onboarding-node.cluster.onprem
+    - name: onboarding-node.chip.test
       value: 10.43.100.2
-    - name: fdo-mfg.cluster.onprem
+    - name: onboarding-stream.chip.test
       value: 10.43.100.2
-    - name: fdo-owner.cluster.onprem
+    - name: fdo-mfg.chip.test
       value: 10.43.100.2
-    - name: license-node.cluster.onprem
+    - name: fdo-owner.chip.test
       value: 10.43.100.2
-    - name: argocd.cluster.onprem
+    - name: license-node.chip.test
+      value: 10.43.100.2
+    - name: orchestrator-license.chip.test
+      value: 10.43.100.2
+    - name: alerting-monitor.chip.test
+      value: 10.43.100.2
+    - name: argocd.chip.test
       value: 10.43.100.1
+    

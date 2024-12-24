@@ -32,13 +32,13 @@ EOF
 while getopts 'i:r:R:g:b:n:D:Odfh' flag; do
   case "${flag}" in
     O) export ONLY_TFTP="only" ;;
-    r) export REMOTE_PXE_SERVER="${OPTARG}" ;;
-    R) export DHCP_RANGE="${OPTARG}" ;;
-    g) export NETWORK_GATEWAY_IP="${OPTARG}";;
-    b) export NETWORK_BROADCAST_IP="${OPTARG}";;
-    i) export INTERFACE_BINDING="${OPTARG}" ;;
-    n) export ORCH_SERVER_DOMAIN="${OPTARG}" ;;
-    D) export DNS_ADDRESS="${OPTARG}" ;;
+    r) export REMOTE_PXE_SERVER="$(echo ${OPTARG} | tr -d ' ')" ;;
+    R) export DHCP_RANGE="$(echo ${OPTARG} | tr -d ' ')" ;;
+    g) export NETWORK_GATEWAY_IP="$(echo ${OPTARG} | tr -d ' ')" ;;
+    b) export NETWORK_BROADCAST_IP="$(echo ${OPTARG} | tr -d ' ')" ;;
+    i) export INTERFACE_BINDING="$(echo ${OPTARG} | tr -d ' ')" ;;
+    n) export ORCH_SERVER_DOMAIN="$(echo ${OPTARG} | tr -d ' ')" ;;
+    D) export DNS_ADDRESS="$(echo ${OPTARG} | tr -d ' ')" ;;
     d) export DNS_PORT=53 ;;
     f) export FTP_PORT=69 ;;
     h) HELP='true' ;;
@@ -56,6 +56,18 @@ main() {
     # download EFI file
     ip=$(cat /home/iotedge/tftp/.ip)
     wget http://${ip}:8080/signed_ipxe.efi -O /home/iotedge/tftp/signed_ipxe.efi
+
+
+    DNS_PORT
+    TFTP_COMMENT
+    INTERFACE_COMMENT
+    DHCP_COMMENT
+    DNS_PORT
+    FTP_PORT
+    DHCP_RANGE
+    ORCH_SERVER_DOMAIN
+
+
 
     if [ ! -z $ONLY_TFTP ];then
         export TFTP_COMMENT=""
