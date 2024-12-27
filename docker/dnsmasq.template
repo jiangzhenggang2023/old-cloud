@@ -40,6 +40,11 @@ domain=builder.local
 # network broadcast
 {{DHCP_COMMENT}}dhcp-option=28,{{NETWORK_BROADCAST_IP}}
 
+dhcp-match=set:x86PC,option:client-arch,0
+dhcp-boot=tag:x86PC,ipxe/legacy/undionly.kpxe
+
+hcp-match=set:IA32_EFI,option:client-arch,6
+dhcp-boot=tag:IA32_EFI,ipxe/efi32/ipxe.efi
 
 # Serve out UEFI-compatible binaries to UEFI64 PXE clients
 {{DHCP_COMMENT}}dhcp-match=set:BC_EFI,option:client-arch,7
